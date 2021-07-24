@@ -166,19 +166,19 @@ function processResponse(instrument) {
 
 
 //instrument to json string
-function paymentResponseToJsonString(paymentResponse) {
-  // PaymentResponse is an interface, JSON.stringify works only on dictionaries.
-  var paymentResponseDictionary = {
-    methodName:paymentResponse.methodName,
-    details:paymentResponse.details,
-    shippingAddress: addressToJsonString(paymentResponse.shippingAddress),
-    shippingOption: paymentResponse.shippingOption,
-    payerName: paymentResponse.payerName,
-    payerPhone: paymentResponse.payerPhone,
-    payerEmail: paymentResponse.payerEmail,
-  };
-  return JSON.stringify(paymentResponseDictionary, undefined, 2);
-}
+// function paymentResponseToJsonString(paymentResponse) {
+//   // PaymentResponse is an interface, JSON.stringify works only on dictionaries.
+//   var paymentResponseDictionary = {
+//     methodName:paymentResponse.methodName,
+//     details:paymentResponse.details,
+//     shippingAddress: addressToJsonString(paymentResponse.shippingAddress),
+//     shippingOption: paymentResponse.shippingOption,
+//     payerName: paymentResponse.payerName,
+//     payerPhone: paymentResponse.payerPhone,
+//     payerEmail: paymentResponse.payerEmail,
+//   };
+//   return JSON.stringify(paymentResponseDictionary, undefined, 2);
+// }
 
 //instrument to json string
 function instrumentToJsonString(instrument){
@@ -186,9 +186,9 @@ function instrumentToJsonString(instrument){
 }
 
 //address to json string
-function addressToJsonString(address){
-  return JSON.stringify(address)
-}
+// function addressToJsonString(address){
+//   return JSON.stringify(address)
+// }
   return (
 
     <div>
