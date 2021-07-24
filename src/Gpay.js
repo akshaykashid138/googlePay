@@ -45,7 +45,7 @@ function onBuyClicked() {
       supportedMethods: ['https://tez.google.com/pay'],
       data: {
         pa: 'BCR2DN6TZ76K7GKI',
-        pn: 'demo gpay',
+        pn: 'demo',
         tr: '1234ABCD',  // Your custom transaction reference ID
         url: 'https://url/of/the/order/in/your/website',
         mc: '1234', //Your merchant category code
@@ -146,6 +146,8 @@ function processResponse(instrument) {
       .catch(function(err) {
         console.log('Unable to process payment. ' + err);
       });
+      // buyResult.json();
+      // completePayment(instrument, buyResultJson.status, buyResultJson.message);
  }
 
  //complete payment
