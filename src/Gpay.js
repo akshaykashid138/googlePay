@@ -44,7 +44,7 @@ function onBuyClicked() {
     {
       supportedMethods: ['https://tez.google.com/pay'],
       data: {
-        pa: 'BCR2DN6TZ76K7GKI',
+        pa: 'kashid.akshay138@oksbi', //BCR2DN6TZ76K7GKI
         pn: 'demo',
         tr: '1234ABCD',  // Your custom transaction reference ID
         url: 'https://url/of/the/order/in/your/website',
