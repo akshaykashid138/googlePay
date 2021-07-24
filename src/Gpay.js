@@ -51,6 +51,14 @@ function onBuyClicked() {
         mc: '1234', //Your merchant category code
         tn: 'Purchase in Merchant',
       },
+    },
+    {
+      supportedMethods: 'basic-card',
+      data: {
+        supportedNetworks: [
+          'visa', 'mastercard'
+        ]
+      }
     }
   ];
 
@@ -97,10 +105,10 @@ function onBuyClicked() {
 
 //show payment UI
 function showPaymentUI(request, canMakePayment) {
-  if (!canMakePayment) {
-    handleNotReadyToPay();
-    return;
-  }
+  // if (!canMakePayment) {
+  //   handleNotReadyToPay();
+  //   return;
+  // }
 
   let paymentTimeout = window.setTimeout(function() {
     window.clearTimeout(paymentTimeout);
@@ -113,6 +121,7 @@ function showPaymentUI(request, canMakePayment) {
         });
   }, 20 * 60 * 1000);
 
+  //displays UI for payment
   request.show()
   .then(function(instrument) {
 
