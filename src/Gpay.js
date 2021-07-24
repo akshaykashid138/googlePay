@@ -44,8 +44,8 @@ function onBuyClicked() {
     {
       supportedMethods: ['https://tez.google.com/pay'],
       data: {
-        pa: 'merchant-vpa@xxx',
-        pn: 'Merchant Name',
+        pa: 'BCR2DN6TZ76K7GKI',
+        pn: 'demo gpay',
         tr: '1234ABCD',  // Your custom transaction reference ID
         url: 'https://url/of/the/order/in/your/website',
         mc: '1234', //Your merchant category code
@@ -60,14 +60,14 @@ function onBuyClicked() {
       label: 'Total',
       amount: {
         currency: 'INR',
-        value: '10.01', // sample amount
+        value: '1.01', // sample amount
       },
     },
     displayItems: [{
       label: 'Original Amount',
       amount: {
         currency: 'INR',
-        value: '10.01',
+        value: '1.01',
       },
     }],
   };
