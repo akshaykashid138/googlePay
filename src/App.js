@@ -1,14 +1,14 @@
 // import Payment from './Payment'
-// import Gpay from './Gpay'
+import Gpay from './Gpay'
 // import Google from './Google'
-import GooglePay from './GooglePay'
+// import GooglePay from './GooglePay'
 
 function App() {
   return (
     <div className="App">
      {/* <Payment /> */}
-     {/* <Gpay /> */}
-     <GooglePay />
+     <Gpay />
+     {/* <GooglePay /> */}
     </div>
   );
 }
