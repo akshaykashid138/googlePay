@@ -51,17 +51,18 @@ function onBuyClicked() {
         mc: '1234', //Your merchant category code
         tn: 'Purchase in Merchant',
       },
-    },
-    {
-      supportedMethods: 'basic-card',
-      data: {
-        supportedNetworks: [
-          'visa', 'mastercard'
-        ]
-      }
     }
   ];
 
+  // ,
+  //   {
+  //     supportedMethods: 'basic-card',
+  //     data: {
+  //       supportedNetworks: [
+  //         'visa', 'mastercard'
+  //       ]
+  //     }
+  //   }
   // Create order detail data.
   const details = {
     total: {
