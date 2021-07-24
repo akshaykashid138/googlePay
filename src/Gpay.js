@@ -46,7 +46,7 @@ function onBuyClicked() {
       data: {
         pa: 'kashid.akshay138@oksbi', //BCR2DN6TZ76K7GKI
         pn: 'demo',
-        tr: '1234ABCD',  // Your custom transaction reference ID
+        tr: '15634ABCD',  // Your custom transaction reference ID
         url: 'https://url/of/the/order/in/your/website',
         mc: '1234', //Your merchant category code
         tn: 'Purchase in Merchant',
@@ -128,26 +128,26 @@ function processResponse(instrument) {
   var instrumentString = instrumentToJsonString(instrument);
   console.log(instrumentString);
  
-  // fetch('/buy', {
-  //   method: 'POST',
-  //   headers: new Headers({'Content-Type': 'application/json'}),
-  //   body: instrumentString,
-  // })
-  //     .then(function(buyResult) {
-  //       if (buyResult.ok) {
-  //         return buyResult.json();
-  //       }
-  //       console.log('Error sending instrument to server.');
-  //     })
-  //     .then(function(buyResultJson) {
-  //       completePayment(instrument, buyResultJson.status, buyResultJson.message);
+  fetch('/buy', {
+    method: 'POST',
+    headers: new Headers({'Content-Type': 'application/json'}),
+    body: instrumentString,
+  })
+      .then(function(buyResult) {
+        if (buyResult.ok) {
+          return buyResult.json();
+        }
+        console.log('Error sending instrument to server.');
+      })
+      .then(function(buyResultJson) {
+        completePayment(instrument, buyResultJson.status, buyResultJson.message);
  
-  //     })
-  //     .catch(function(err) {
-  //       console.log('Unable to process payment. ' + err);
-  //     });
+      })
+      .catch(function(err) {
+        console.log('Unable to process payment. ' + err);
+      });
       // buyResult.json();
-      completePayment(instrument, "success", "payment done");
+      // completePayment(instrument, "success", "payment done");
  }
 
  //complete payment
