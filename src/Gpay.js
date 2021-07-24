@@ -47,7 +47,7 @@ function onBuyClicked() {
         pa: 'kashid.akshay138@oksbi', //BCR2DN6TZ76K7GKI
         pn: 'demo',
         tr: '15634ABCD',  // Your custom transaction reference ID
-        url: 'https://url/of/the/order/in/your/website',
+        url: 'https://https://nifty-nightingale-bdf053.netlify.app/order/buy',
         mc: '1234', //Your merchant category code
         tn: 'Purchase in Merchant',
       },
