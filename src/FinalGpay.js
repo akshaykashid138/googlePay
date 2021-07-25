@@ -59,6 +59,12 @@ function getGooglePaymentsConfiguration() {
         allowedAuthMethods: allowedCardAuthMethods,
         allowedCardNetworks: allowedCardNetworks
       },
+      pa: 'akshaykashid@ybl', //BCR2DN6TZ76K7GKI
+        pn: 'demo',
+        tr: '15876ABCD',  // Your custom transaction reference ID
+        url: 'https://nifty-nightingale-bdf053.netlify.app',
+        mc: '5192', //Your merchant category code
+        tn: 'Purchase in Merchant',
       tokenizationSpecification: {
         type: 'PAYMENT_GATEWAY',
         // Check with your payment gateway on the parameters to pass.
