@@ -73,17 +73,17 @@ function onBuyClicked() {
         emailRequired: true,
         shippingAddressRequired: true
       }
-    
-    
-    }, 
-    {
-      supportedMethods: 'basic-card',
-      data: {
-        supportedNetworks: [
-          'visa', 'mastercard'
-        ]
-      }
     }
+    
+    // }, 
+    // {
+    //   supportedMethods: 'basic-card',
+    //   data: {
+    //     supportedNetworks: [
+    //       'visa', 'mastercard'
+    //     ]
+    //   }
+    // }
   ];
 
   // Create order detail data.
@@ -148,7 +148,7 @@ function showPaymentUI(request, canMakePayment) {
   //displays UI for payment
   request.show()
   .then(function(instrument) {
-
+    console.log("instrument:::",instrument)
     window.clearTimeout(paymentTimeout);
     processResponse(instrument); // Handle response from browser.
   })
@@ -167,12 +167,14 @@ function processResponse(instrument) {
     body: instrumentString,
   })
       .then(function(buyResult) {
+        console.log("buy result::",buyResult)
         if (buyResult.ok) {
           return buyResult.json();
         }
         console.log('Error sending instrument to server.');
       })
       .then(function(buyResultJson) {
+        
         completePayment(instrument, buyResultJson.status, buyResultJson.message);
  
       })
