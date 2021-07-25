@@ -44,11 +44,11 @@ function onBuyClicked() {
     {
       supportedMethods: ['https://tez.google.com/pay'],
       data: {
-        pa: 'kashid.akshay138@oksbi', //BCR2DN6TZ76K7GKI
+        pa: 'akshaykashid@ybl', //BCR2DN6TZ76K7GKI
         pn: 'demo',
         tr: '15876ABCD',  // Your custom transaction reference ID
         url: 'https://nifty-nightingale-bdf053.netlify.app/order/buy',
-        mc: '1234', //Your merchant category code
+        mc: '5192', //Your merchant category code
         tn: 'Purchase in Merchant',
       },
     },
