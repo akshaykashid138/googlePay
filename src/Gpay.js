@@ -42,16 +42,17 @@ function onBuyClicked() {
   // Create supported payment method.
   const supportedInstruments = [
     {
-      supportedMethods: ['https://tez.google.com/pay'],
+      supportedMethods: ['https://tez.google.com/pay','https://google.com/pay'],
       data: {
         pa: 'kashid.akshay138@oksbi', //BCR2DN6TZ76K7GKI
         pn: 'demo',
-        tr: '15634ABCD',  // Your custom transaction reference ID
-        url: 'https://https://nifty-nightingale-bdf053.netlify.app/order/buy',
+        tr: '15876ABCD',  // Your custom transaction reference ID
+        url: 'https://nifty-nightingale-bdf053.netlify.app/order/buy',
         mc: '1234', //Your merchant category code
         tn: 'Purchase in Merchant',
       },
     },
+
 
     // {
     //   supportedMethods: 'https://google.com/pay',
@@ -160,29 +161,30 @@ function showPaymentUI(request, canMakePayment) {
 }
 
 function processResponse(instrument) {
-  var instrumentString = instrumentToJsonString(instrument);
-  console.log(instrumentString);
+  // var instrumentString = instrumentToJsonString(instrument);
+  // console.log(instrumentString);
  
-  fetch('/buy', {
-    method: 'POST',
-    headers: new Headers({'Content-Type': 'application/json'}),
-    body: instrumentString,
-  })
-      .then(function(buyResult) {
-        console.log("buy result::",buyResult)
-        if (buyResult.ok) {
-          return buyResult.json();
-        }
-        console.log('Error sending instrument to server.');
-      })
-      .then(function(buyResultJson) {
+  // fetch('/buy', {
+  //   method: 'POST',
+  //   headers: new Headers({'Content-Type': 'application/json'}),
+  //   body: instrumentString,
+  // })
+  //     .then(function(buyResult) {
+  //       console.log("buy result::",buyResult)
+  //       if (buyResult.ok) {
+  //         return buyResult.json();
+  //       }
+  //       console.log('Error sending instrument to server.');
+  //     })
+  //     .then(function(buyResultJson) {
         
-        completePayment(instrument, buyResultJson.status, buyResultJson.message);
+  //       completePayment(instrument, buyResultJson.status, buyResultJson.message);
  
-      })
-      .catch(function(err) {
-        console.log('Unable to process payment. ' + err);
-      });
+  //     })
+  //     .catch(function(err) {
+  //       console.log('Unable to process payment. ' + err);
+  //     });
+  completePayment(instrument, 200, "success");
       // buyResult.json();
       // completePayment(instrument, "success", "payment done");
  }
