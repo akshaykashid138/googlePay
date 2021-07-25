@@ -53,26 +53,48 @@ function onBuyClicked() {
     //   },
     // },
 
+    // {
+    //   supportedMethods: 'https://google.com/pay',
+    //   data: {
+    //     environment: 'TEST',
+    //     apiVersion: 1,
+    //     allowedPaymentMethods: ['CARD', 'TOKENIZED_CARD'],
+    //     paymentMethodTokenizationParameters: {
+    //       tokenizationType: 'PAYMENT_GATEWAY',
+    //       // Check with your payment gateway on the parameters to pass.
+    //       parameters: {}
+    //     },
+    //     cardRequirements: {
+    //       allowedCardNetworks: ['AMEX', 'DISCOVER', 'MASTERCARD', 'VISA'],
+    //       billingAddressRequired: true,
+    //     billingAddressFormat: 'MIN'
+    //     },
+    //     phoneNumberRequired: true,
+    //     emailRequired: true,
+    //     shippingAddressRequired: true
+    //   }
+    // }
+
     {
       supportedMethods: 'https://google.com/pay',
       data: {
-        environment: 'TEST',
-        apiVersion: 1,
-        allowedPaymentMethods: ['CARD', 'TOKENIZED_CARD'],
-        paymentMethodTokenizationParameters: {
-          tokenizationType: 'PAYMENT_GATEWAY',
+        'environment': 'TEST',
+        'apiVersion': 1,
+        'allowedPaymentMethods': ['CARD', 'TOKENIZED_CARD'],
+        'paymentMethodTokenizationParameters': {
+          'tokenizationType': 'PAYMENT_GATEWAY',
           // Check with your payment gateway on the parameters to pass.
-          parameters: {}
+          'parameters': {}
         },
-        cardRequirements: {
-          allowedCardNetworks: ['AMEX', 'DISCOVER', 'MASTERCARD', 'VISA'],
-          billingAddressRequired: true,
-        billingAddressFormat: 'MIN'
+        'cardRequirements': {
+          'allowedCardNetworks': ['AMEX', 'DISCOVER', 'MASTERCARD', 'VISA'],
+          'billingAddressRequired': true,
+          'billingAddressFormat': 'MIN'
         },
-        phoneNumberRequired: true,
-        emailRequired: true,
-        shippingAddressRequired: true
-      }
+        'phoneNumberRequired': true,
+        'emailRequired': true,
+        'shippingAddressRequired': true
+      },
     }
     
     // }, 
