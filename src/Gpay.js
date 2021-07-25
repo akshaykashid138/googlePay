@@ -44,7 +44,7 @@ function onBuyClicked() {
     {
       supportedMethods: ['https://tez.google.com/pay'],
       data: {
-        pa: 'akshaykashid@ybl', //BCR2DN6TZ76K7GKI
+        pa: 'kashid.akshay138@oksbi', //BCR2DN6TZ76K7GKI
         pn: 'demo',
         tr: '15876ABCD',  // Your custom transaction reference ID
         url: 'https://nifty-nightingale-bdf053.netlify.app/order/buy',
