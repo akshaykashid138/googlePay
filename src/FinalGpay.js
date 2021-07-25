@@ -59,12 +59,6 @@ function getGooglePaymentsConfiguration() {
         allowedAuthMethods: allowedCardAuthMethods,
         allowedCardNetworks: allowedCardNetworks
       },
-      pa: 'akshaykashid@ybl', //BCR2DN6TZ76K7GKI
-        pn: 'demo',
-        tr: '15876ABCD',  // Your custom transaction reference ID
-        url: 'https://nifty-nightingale-bdf053.netlify.app',
-        mc: '5192', //Your merchant category code
-        tn: 'Purchase in Merchant',
       tokenizationSpecification: {
         type: 'PAYMENT_GATEWAY',
         // Check with your payment gateway on the parameters to pass.
@@ -86,17 +80,17 @@ function getGooglePaymentsConfiguration() {
 function createPaymentRequest() {
   // Add support for the Google Pay API.
   const methodData = [{
-    supportedMethods: 'https://tez.google.com/pay',
+    supportedMethods: 'https://google.com/pay',
     data: getGooglePaymentsConfiguration()
   }];
   // Add other supported payment methods.
-  // methodData.push({
-  //   supportedMethods: 'basic-card',
-  //   data: {
-  //     supportedNetworks:
-  //         Array.from(allowedCardNetworks, (network) => network.toLowerCase())
-  //   }
-  // });
+  methodData.push({
+    supportedMethods: 'basic-card',
+    data: {
+      supportedNetworks:
+          Array.from(allowedCardNetworks, (network) => network.toLowerCase())
+    }
+  });
 
   const details = {
     total: {label: 'Test Purchase', amount: {currency: 'USD', value: '1.00'}}
@@ -137,9 +131,9 @@ function showErrorForDebugging(text) {
   document.getElementById('checkout').insertAdjacentElement('afterend', p);
 }
     return (
-      <div id="checkout">
-      <button id="buyButton">Checkout</button>
-    </div>
+        <div id="checkout">
+  <button id="buyButton">Checkout</button>
+</div>
     )
 }
 
