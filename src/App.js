@@ -3,8 +3,8 @@
 // import Google from './Google'
 // import GooglePay from './GooglePay'
 
-// import Gpay from './Gpay'
-import Final from './Final'
+import Gpay from './Gpay'
+// import Final from './Final'
 
 function App() {
   return (
@@ -12,8 +12,8 @@ function App() {
      {/* <Payment /> */}
      
      {/* <GooglePay /> */}
-     {/* <Gpay /> */}
-     <Final />
+     <Gpay />
+     {/* <Final />   */}
     </div>
   );
 }

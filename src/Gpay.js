@@ -41,17 +41,17 @@ function onBuyClicked() {
 
   // Create supported payment method.
   const supportedInstruments = [
-    // {
-    //   supportedMethods: ['https://tez.google.com/pay'],
-    //   data: {
-    //     pa: 'kashid.akshay138@oksbi', //BCR2DN6TZ76K7GKI
-    //     pn: 'demo',
-    //     tr: '15634ABCD',  // Your custom transaction reference ID
-    //     url: 'https://https://nifty-nightingale-bdf053.netlify.app/order/buy',
-    //     mc: '1234', //Your merchant category code
-    //     tn: 'Purchase in Merchant',
-    //   },
-    // },
+    {
+      supportedMethods: ['https://tez.google.com/pay'],
+      data: {
+        pa: 'kashid.akshay138@oksbi', //BCR2DN6TZ76K7GKI
+        pn: 'demo',
+        tr: '15634ABCD',  // Your custom transaction reference ID
+        url: 'https://https://nifty-nightingale-bdf053.netlify.app/order/buy',
+        mc: '1234', //Your merchant category code
+        tn: 'Purchase in Merchant',
+      },
+    },
 
     // {
     //   supportedMethods: 'https://google.com/pay',
@@ -75,27 +75,7 @@ function onBuyClicked() {
     //   }
     // }
 
-    {
-      supportedMethods: 'https://google.com/pay',
-      data: {
-        'environment': 'TEST',
-        'apiVersion': 1,
-        'allowedPaymentMethods': ['CARD', 'TOKENIZED_CARD'],
-        'paymentMethodTokenizationParameters': {
-          'tokenizationType': 'PAYMENT_GATEWAY',
-          // Check with your payment gateway on the parameters to pass.
-          'parameters': {}
-        },
-        'cardRequirements': {
-          'allowedCardNetworks': ['AMEX', 'DISCOVER', 'MASTERCARD', 'VISA'],
-          'billingAddressRequired': true,
-          'billingAddressFormat': 'MIN'
-        },
-        'phoneNumberRequired': true,
-        'emailRequired': true,
-        'shippingAddressRequired': true
-      },
-    }
+  
     
     // }, 
     // {
