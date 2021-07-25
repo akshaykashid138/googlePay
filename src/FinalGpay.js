@@ -80,17 +80,17 @@ function getGooglePaymentsConfiguration() {
 function createPaymentRequest() {
   // Add support for the Google Pay API.
   const methodData = [{
-    supportedMethods: 'https://google.com/pay',
+    supportedMethods: 'https://tez.google.com/pay',
     data: getGooglePaymentsConfiguration()
   }];
   // Add other supported payment methods.
-  methodData.push({
-    supportedMethods: 'basic-card',
-    data: {
-      supportedNetworks:
-          Array.from(allowedCardNetworks, (network) => network.toLowerCase())
-    }
-  });
+  // methodData.push({
+  //   supportedMethods: 'basic-card',
+  //   data: {
+  //     supportedNetworks:
+  //         Array.from(allowedCardNetworks, (network) => network.toLowerCase())
+  //   }
+  // });
 
   const details = {
     total: {label: 'Test Purchase', amount: {currency: 'USD', value: '1.00'}}
