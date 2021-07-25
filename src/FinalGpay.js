@@ -1,8 +1,10 @@
 import React from 'react'
 
 const FinalGpay = () => {
+
   const allowedCardNetworks = ["AMEX", "DISCOVER", "INTERAC", "JCB", "MASTERCARD", "VISA"];
   const allowedCardAuthMethods = ["PAN_ONLY", "CRYPTOGRAM_3DS"];
+
   if (window.PaymentRequest) {
     const request = createPaymentRequest();
   
@@ -50,7 +52,7 @@ function getGooglePaymentsConfiguration() {
     apiVersionMinor: 0,
     merchantInfo: {
       // A merchant ID is available after approval by Google.
-      // 'merchantId':'12345678901234567890',
+      merchantId:'BCR2DN6TZ76K7GKI',
       merchantName: 'Example Merchant'
     },
     allowedPaymentMethods: [{
