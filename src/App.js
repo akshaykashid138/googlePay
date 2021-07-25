@@ -5,6 +5,8 @@
 
 import Gpay from './Gpay'
 // import Final from './Final'
+// import Final from "./Final";
+// import FinalGpay from "./FinalGpay";
 
 function App() {
   return (
@@ -14,6 +16,7 @@ function App() {
      {/* <GooglePay /> */}
      <Gpay />
      {/* <Final />   */}
+     {/* <FinalGpay /> */}
     </div>
   );
 }
