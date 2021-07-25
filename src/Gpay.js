@@ -42,7 +42,7 @@ function onBuyClicked() {
   // Create supported payment method.
   const supportedInstruments = [
     {
-      supportedMethods: ['https://tez.google.com/pay'],
+      supportedMethods: ['https://google.com/pay'],
       data: {
         pa: 'kashid.akshay138@oksbi', //BCR2DN6TZ76K7GKI
         pn: 'demo',
