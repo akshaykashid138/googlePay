@@ -47,9 +47,14 @@ function onBuyClicked() {
         pa: 'kashid.akshay138@oksbi', //BCR2DN6TZ76K7GKI
         pn: 'demo',
         tr: '15876ABCD',  // Your custom transaction reference ID
-        url: 'https://nifty-nightingale-bdf053.netlify.app/order/buy',
+        url: 'https://nifty-nightingale-bdf053.netlify.app',
         mc: '5192', //Your merchant category code
         tn: 'Purchase in Merchant',
+        
+        gstBrkUp: 'GST:16.90|CGST:08.45|SGST:08.45', // GST value break up
+        invoiceNo: 'BillRef123', // your invoice number
+        invoiceDate: '2021-07-25T16:21:50+05:30', // your invoice date and time
+        gstIn: '29ABCDE1234F2Z5', // your GSTIN
       },
     },
     // {
