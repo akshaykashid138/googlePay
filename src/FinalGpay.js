@@ -1,430 +1,139 @@
 import React from 'react'
 
 const FinalGpay = () => {
-    const canMakePaymentCache = 'canMakePaymentCache';
-
-/**
- * Read data for supported instruments from input from.
- */
-function readSupportedInstruments() {
-  let formValue = {};
-  formValue['pa'] = document.getElementById('pa').value;
-  formValue['pn'] = document.getElementById('pn').value;
-  formValue['tn'] = document.getElementById('tn').value;
-  formValue['mc'] = document.getElementById('mc').value;
-  formValue['tr'] = document.getElementById('tr').value;
-  formValue['tid'] = document.getElementById('tid').value;
-  formValue['url'] = document.getElementById('url').value;
-  return formValue;
-}
-
-/**
- * Read the amount from input form.
- */
-function readAmount() {
-  return document.getElementById('amount').value;
-}
-
+  const allowedCardNetworks = ["AMEX", "DISCOVER", "INTERAC", "JCB", "MASTERCARD", "VISA"];
+  const allowedCardAuthMethods = ["PAN_ONLY", "CRYPTOGRAM_3DS"];
+  if (window.PaymentRequest) {
+    const request = createPaymentRequest();
+  
+    request.canMakePayment()
+        .then(function(result) {
+          if (result) {
+            // Display PaymentRequest dialog on interaction with the existing checkout button
+            document.getElementById('buyButton')
+                .addEventListener('click', onBuyClicked);
+          }
+        })
+        .catch(function(err) {
+          showErrorForDebugging(
+              'canMakePayment() error! ' + err.name + ' error: ' + err.message);
+        });
+  } else {
+    showErrorForDebugging('PaymentRequest API not available.');
+  }
 /**
  * Launches payment request.
  */
-function onBuyClicked() {
-  if (!window.PaymentRequest) {
-    console.log('Web payments are not supported in this browser.');
-    return;
-  }
+ function onBuyClicked() {
+  createPaymentRequest()
+      .show()
+      .then(function(response) {
+        // Dismiss payment dialog.
+        response.complete('success');
+        handlePaymentResponse(response);
+      })
+      .catch(function(err) {
+        showErrorForDebugging(
+            'show() error! ' + err.name + ' error: ' + err.message);
+      });
+}
 
-  let formValue = readSupportedInstruments();
+/**
+ * Define your unique Google Pay API configuration
+ *
+ * @returns {object} data attribute suitable for PaymentMethodData
+ */
+function getGooglePaymentsConfiguration() {
+  return {
+    environment: 'TEST',
+    apiVersion: 2,
+    apiVersionMinor: 0,
+    merchantInfo: {
+      // A merchant ID is available after approval by Google.
+      // 'merchantId':'12345678901234567890',
+      merchantName: 'Example Merchant'
+    },
+    allowedPaymentMethods: [{
+      type: 'CARD',
+      parameters: {
+        allowedAuthMethods: allowedCardAuthMethods,
+        allowedCardNetworks: allowedCardNetworks
+      },
+      tokenizationSpecification: {
+        type: 'PAYMENT_GATEWAY',
+        // Check with your payment gateway on the parameters to pass.
+        // @see {@link https://developers.google.com/pay/api/web/reference/request-objects#gateway}
+        parameters: {
+          'gateway': 'example',
+          'gatewayMerchantId': 'exampleGatewayMerchantId'
+        }
+      }
+    }]
+  };
+}
 
-  const supportedInstruments = [
-    {
-      supportedMethods: ['https://pwp-server.appspot.com/pay-dev'],
-      data: formValue,
-    },
-    {
-      supportedMethods: ['https://tez.google.com/pay'],
-      data: formValue,
-    },
-  ];
+/**
+ * Create a PaymentRequest
+ *
+ * @returns {PaymentRequest}
+ */
+function createPaymentRequest() {
+  // Add support for the Google Pay API.
+  const methodData = [{
+    supportedMethods: 'https://google.com/pay',
+    data: getGooglePaymentsConfiguration()
+  }];
+  // Add other supported payment methods.
+  methodData.push({
+    supportedMethods: 'basic-card',
+    data: {
+      supportedNetworks:
+          Array.from(allowedCardNetworks, (network) => network.toLowerCase())
+    }
+  });
 
   const details = {
-    total: {
-      label: 'Total',
-      amount: {
-        currency: 'INR',
-        value: readAmount(),
-      },
-    },
-    displayItems: [
-      {
-        label: 'Original amount',
-        amount: {
-          currency: 'INR',
-          value: readAmount(),
-        },
-      },
-    ],
+    total: {label: 'Test Purchase', amount: {currency: 'USD', value: '1.00'}}
   };
 
   const options = {
-    requestShipping: true,
-    requestPayerName: true,
-    requestPayerPhone: true,
     requestPayerEmail: true,
-    shippingType: 'shipping',
+    requestPayerName: true
   };
 
-  let request = null;
-  try {
-    request = new PaymentRequest(supportedInstruments, details, options);
-  } catch (e) {
-    console.log('Payment Request Error: ' + e.message);
-    return;
-  }
-  if (!request) {
-    console.log('Web payments are not supported in this browser.');
-    return;
-  }
-
-  request.addEventListener('shippingaddresschange', function(evt) {
-    evt.updateWith(new Promise(function(resolve) {
-      fetch('/ship', {
-        method: 'POST',
-        headers: new Headers({'Content-Type': 'application/json'}),
-        body: addressToJsonString(request.shippingAddress),
-        credentials: 'include',
-      })
-          .then(function(options) {
-            if (options.ok) {
-              return options.json();
-            }
-            console.log('Unable to calculate shipping options.');
-          })
-          .then(function(optionsJson) {
-            if (optionsJson.status === 'success') {
-              updateShipping(details, optionsJson.shippingOptions, resolve);
-            } else {
-              console.log('Unable to calculate shipping options.');
-            }
-          })
-          .catch(function(err) {
-            console.log('Unable to calculate shipping options. ' + err);
-          });
-    }));
-  });
-
-  request.addEventListener('shippingoptionchange', function(evt) {
-    evt.updateWith(new Promise(function(resolve) {
-      for (let i in details.shippingOptions) {
-        if ({}.hasOwnProperty.call(details.shippingOptions, i)) {
-          details.shippingOptions[i].selected =
-              (details.shippingOptions[i].id === request.shippingOption);
-        }
-      }
-
-      updateShipping(details, details.shippingOptions, resolve);
-    }));
-  });
-
-  var canMakePaymentPromise = checkCanMakePayment(request);
-  canMakePaymentPromise
-      .then((result) => {
-        showPaymentUI(request, result);
-      })
-      .catch((err) => {
-        console.log('Error calling checkCanMakePayment: ' + err);
-      });
+  return new PaymentRequest(methodData, details, options);
 }
 
 /**
- * Checks whether can make a payment with Tez on this device. It checks the
- * session storage cache first and uses the cached information if it exists.
- * Otherwise, it calls canMakePayment method from the Payment Request object and
- * returns the result. The result is also stored in the session storage cache
- * for future use.
+ * Process a PaymentResponse
  *
- * @private
- * @param {PaymentRequest} request The payment request object.
- * @return {Promise} a promise containing the result of whether can make payment.
+ * @param {PaymentResponse} response returned when a user approves the payment request
  */
-function checkCanMakePayment(request) {
-  // Checks canMakePayment cache, and use the cache result if it exists.
-  if (sessionStorage.hasOwnProperty(canMakePaymentCache)) {
-    return Promise.resolve(JSON.parse(sessionStorage[canMakePaymentCache]));
-  }
-
-  // If canMakePayment() isn't available, default to assuming that the method is
-  // supported.
-  var canMakePaymentPromise = Promise.resolve(true);
-
-  // Feature detect canMakePayment().
-  if (request.canMakePayment) {
-    canMakePaymentPromise = request.canMakePayment();
-  }
-
-  return canMakePaymentPromise
-      .then((result) => {
-        // Store the result in cache for future usage.
-        sessionStorage[canMakePaymentCache] = result;
-        return result;
-      })
-      .catch((err) => {
-        console.log('Error calling canMakePayment: ' + err);
-      });
+function handlePaymentResponse(response) {
+  const formattedResponse = document.createElement('pre');
+  formattedResponse.appendChild(
+      document.createTextNode(JSON.stringify(response.toJSON(), null, 2)));
+  document.getElementById('checkout')
+      .insertAdjacentElement('afterend', formattedResponse);
 }
 
 /**
- * Show the payment request UI.
+ * Display an error message for debugging
  *
- * @private
- * @param {PaymentRequest} request The payment request object.
- * @param {Promise} canMakePayment The promise for whether can make payment.
+ * @param {string} text message to display
  */
-function showPaymentUI(request, canMakePayment) {
-  // Redirect to play store if can't make payment.
-  if (!canMakePayment) {
-    redirectToPlayStore();
-    return;
-  }
-
-  // Set payment timeout.
-  let paymentTimeout = window.setTimeout(function() {
-    window.clearTimeout(paymentTimeout);
-    request.abort()
-        .then(function() {
-          console.log('Payment timed out after 20 minutes.');
-        })
-        .catch(function() {
-          console.log('Unable to abort, user is in the process of paying.');
-        });
-  }, 20 * 60 * 1000); /* 20 minutes */
-
-  request.show()
-      .then(function(instrument) {
-        window.clearTimeout(paymentTimeout);
-        processResponse(instrument);  // Handle response from browser.
-      })
-      .catch(function(err) {
-        console.log(err);
-      });
-}
-
-/**
- * Process the response from browser.
- *
- * @private
- * @param {PaymentResponse} instrument The payment instrument that was authed.
- */
-function processResponse(instrument) {
-  var instrumentString = instrumentToJsonString(instrument);
-  console.log(instrumentString);
-
-  fetch('/buy', {
-    method: 'POST',
-    headers: new Headers({'Content-Type': 'application/json'}),
-    body: instrumentString,
-    credentials: 'include',
-  })
-      .then(function(buyResult) {
-        if (buyResult.ok) {
-          return buyResult.json();
-        }
-        console.log('Error sending instrument to server.');
-      })
-      .then(function(buyResultJson) {
-        completePayment(
-            instrument, buyResultJson.status, buyResultJson.message);
-      })
-      .catch(function(err) {
-        console.log('Unable to process payment. ' + err);
-      });
-}
-
-/**
- * Notify browser that the instrument authorization has completed.
- *
- * @private
- * @param {PaymentResponse} instrument The payment instrument that was authed.
- * @param {string} result Whether the auth was successful. Should be either
- * 'success' or 'fail'.
- * @param {string} msg The message to log in console.
- */
-function completePayment(instrument, result, msg) {
-  instrument.complete(result)
-      .then(function() {
-        console.log('Payment completes.');
-        console.log(msg);
-        document.getElementById('inputSection').style.display = 'none'
-        document.getElementById('outputSection').style.display = 'block'
-        document.getElementById('response').innerHTML =
-            JSON.stringify(instrument, undefined, 2);
-      })
-      .catch(function(err) {
-        console.log(err);
-      });
-}
-
-/** Redirect to PlayStore. */
-function redirectToPlayStore() {
-  // if (confirm('Tez not installed, go to play store and install?')) {
-  //   window.location.href =
-  //       'https://play.google.com/store/apps/details?id=com.google.android.apps.nbu.paisa.user.alpha'
-  // };
-  alert("not supported")
-}
-
-/**
- * Converts the shipping address into a JSON string.
- *
- * @private
- * @param {PaymentAddress} address The address to convert.
- * @return {string} The string representation of the address.
- */
-function addressToJsonString(address) {
-  var addressDictionary = address.toJSON ? address.toJSON() : {
-    recipient: address.recipient,
-    organization: address.organization,
-    addressLine: address.addressLine,
-    dependentLocality: address.dependentLocality,
-    city: address.city,
-    region: address.region,
-    postalCode: address.postalCode,
-    sortingCode: address.sortingCode,
-    country: address.country,
-    phone: address.phone,
-  };
-  return JSON.stringify(addressDictionary, undefined, 2);
-}
-
-/**
- * Converts the payment instrument into a JSON string.
- *
- * @private
- * @param {PaymentResponse} instrument The instrument to convert.
- * @return {string} The string representation of the instrument.
- */
-function instrumentToJsonString(instrument) {
-  // PaymentResponse is an interface, JSON.stringify works only on dictionaries.
-  var instrumentDictionary = {
-    methodName: instrument.methodName,
-    details: instrument.details,
-    shippingAddress: addressToJsonString(instrument.shippingAddress),
-    shippingOption: instrument.shippingOption,
-    payerName: instrument.payerName,
-    payerPhone: instrument.payerPhone,
-    payerEmail: instrument.payerEmail,
-  };
-  return JSON.stringify(instrumentDictionary, undefined, 2);
-}
-
-/**
- * Update order details with shipping information.
- *
- * @private
- * @param {PaymentDetails} details The details for payment.
- * @param {Array} shippingOptions The shipping options.
- * @param {function} callback The callback to invoke.
- */
-function updateShipping(details, shippingOptions, callback) {
-  let selectedShippingOption;
-  for (let i in shippingOptions) {
-    if (shippingOptions[i].selected) {
-      selectedShippingOption = shippingOptions[i];
-    }
-  }
-
-  var total = parseFloat(readAmount());
-  if (selectedShippingOption) {
-    let shippingPrice = Number(selectedShippingOption.amount.value);
-    total = total + shippingPrice;
-  }
-
-  details.shippingOptions = shippingOptions;
-  details.total.amount.value = total.toFixed(2);
-  if (selectedShippingOption) {
-    details.displayItems.splice(
-        1, details.displayItems.length == 1 ? 0 : 1, selectedShippingOption);
-  }
-
-  callback(details);
+function showErrorForDebugging(text) {
+  const errorDisplay = document.createElement('code');
+  errorDisplay.style.color = 'red';
+  errorDisplay.appendChild(document.createTextNode(text));
+  const p = document.createElement('p');
+  p.appendChild(errorDisplay);
+  document.getElementById('checkout').insertAdjacentElement('afterend', p);
 }
     return (
-        <div>
-            <div className="container">
-    <h2>Web Payment Test</h2>
-    <p>This page is for testing web payment.</p>
-
-    <div id="inputSection">
-
-        <form className="form-horizontal">
-            <div className="form-group row">
-                <label className="control-label col-xs-3" for="amount">Amount:</label>
-                <div className="col-xs-9">
-                    <input className="form-control" type="number" id="amount" />
-                </div>
-            </div>
-
-            <div className="form-group row">
-                <label className="control-label col-xs-3" for="pa">Payee VPA (pa):</label>
-                <div className="col-xs-9">
-                    <input className="form-control" type="text" id="pa" />
-                </div>
-            </div>
-
-            <div className="form-group row">
-                <label className="control-label col-xs-3" for="pn">Payee Name (pn):</label>
-                <div className="col-xs-9">
-                    <input className="form-control" type="text" id="pn" />
-                </div>
-            </div>
-
-            <div className="form-group row">
-                <label className="control-label col-xs-3" for="tn">Txn Note (tn):</label>
-                <div className="col-xs-9">
-                    <input className="form-control" type="text" id="tn" />
-                </div>
-            </div>
-
-            <div className="form-group row">
-                <label className="control-label col-xs-3" for="mc">Merchant Code (mc):</label>
-                <div className="col-xs-9">value="1234"/>
-                </div>
-            </div>
-
-            <div className="form-group row">
-                <label className="control-label col-xs-3" for="tid">Txn ID (tid):</label>
-                <div className="col-xs-9">
-                    <input className="form-control" type="text" id="tid"/>
-                </div>
-            </div>
-
-            <div className="form-group row">
-                <label className="control-label col-xs-3" for="tr">Txn Ref ID (tr):</label>
-                <div className="col-xs-9">
-                    <input className="form-control" type="text" id="tr" />
-                </div>
-            </div>
-
-            <div className="form-group row">
-                <label className="control-label col-xs-3" for="url">Ref URL (url):</label>
-                <div className="col-xs-9">
-                    <input className="form-control" type="url" id="url" />
-                </div>
-            </div>
-        </form>
-
-        <div className="form-group row clearfix">
-            <div className="col-xs-12">
-                <button className="btn btn-info pull-right" onClick={onBuyClicked}>Buy</button>
-            </div>
-        </div>
+      <div id="checkout">
+      <button id="buyButton">Checkout</button>
     </div>
-
-    <div id="outputSection" style={{display:"none"}}>
-        <pre id="response"></pre>
-    </div>
-</div>
-        </div>
     )
 }
 

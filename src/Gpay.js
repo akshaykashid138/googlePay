@@ -42,19 +42,27 @@ function onBuyClicked() {
   // Create supported payment method.
   const supportedInstruments = [
     {
-      supportedMethods: ['https://google.com/pay'],
+      supportedMethods: ['https://tez.google.com/pay'],
       data: {
-        pa: 'kashid.akshay138@oksbi', //BCR2DN6TZ76K7GKI
+        pa: 'akshaykashid@ybl', //BCR2DN6TZ76K7GKI
         pn: 'demo',
         tr: '15876ABCD',  // Your custom transaction reference ID
         url: 'https://nifty-nightingale-bdf053.netlify.app',
         mc: '5192', //Your merchant category code
         tn: 'Purchase in Merchant',
-        
-        gstBrkUp: 'GST:16.90|CGST:08.45|SGST:08.45', // GST value break up
-        invoiceNo: 'BillRef123', // your invoice number
-        invoiceDate: '2021-07-25T16:21:50+05:30', // your invoice date and time
-        gstIn: '29ABCDE1234F2Z5', // your GSTIN
+      
+      },
+    },
+    {
+      supportedMethods: ['https://google.com/pay'],
+      data: {
+        pa: 'akshaykashid@ybl', //BCR2DN6TZ76K7GKI
+        pn: 'demo',
+        tr: '15876ABCD',  // Your custom transaction reference ID
+        url: 'https:127.0.0.1:3000',
+        mc: '5192', //Your merchant category code
+        tn: 'Purchase in Merchant',
+       
       },
     },
     // {
