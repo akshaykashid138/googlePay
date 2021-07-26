@@ -80,6 +80,16 @@ function getGooglePaymentsConfiguration() {
   };
 }
 
+function getPay(){
+  return{
+    pa: 'akshaykashid@ybl', //BCR2DN6TZ76K7GKI
+    pn: 'demo',
+    tr: '15876ABCD',  // Your custom transaction reference ID
+    url: 'https://nifty-nightingale-bdf053.netlify.app',
+    mc: '5192', //Your merchant category code
+    tn: 'Purchase in Merchant',
+  }
+}
 /**
  * Create a PaymentRequest
  *
@@ -89,7 +99,8 @@ function createPaymentRequest() {
   // Add support for the Google Pay API.
   const methodData = [{
     supportedMethods: 'https://tez.google.com/pay',
-    data: getGooglePaymentsConfiguration()
+    // data: getGooglePaymentsConfiguration()
+    data:getPay()
   }];
   // Add other supported payment methods.
   methodData.push({
