@@ -85,7 +85,7 @@ function getPay(){
     pa: 'akshaykashid@ybl', //BCR2DN6TZ76K7GKI
     pn: 'demo',
     tr: '15876ABCD',  // Your custom transaction reference ID
-    url: 'https://nifty-nightingale-bdf053.netlify.app',
+    url: 'https://gpay-integration.netlify.app/',
     mc: '5192', //Your merchant category code
     tn: 'Purchase in Merchant',
   }
