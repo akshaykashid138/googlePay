@@ -55,12 +55,12 @@ function getGooglePaymentsConfiguration() {
       merchantId:'BCR2DN6TZ76K7GKI',
       merchantName: 'Example Merchant'
     },
-    pa: 'akshaykashid@ybl', //BCR2DN6TZ76K7GKI
-    pn: 'demo',
-    tr: '15876ABCD',  // Your custom transaction reference ID
-    url: 'https://nifty-nightingale-bdf053.netlify.app',
-    mc: '5192', //Your merchant category code
-    tn: 'Purchase in Merchant',
+    // pa: 'akshaykashid@ybl', //BCR2DN6TZ76K7GKI
+    // pn: 'demo',
+    // tr: '15876ABCD',  // Your custom transaction reference ID
+    // url: 'https://nifty-nightingale-bdf053.netlify.app',
+    // mc: '5192', //Your merchant category code
+    // tn: 'Purchase in Merchant',
     allowedPaymentMethods: [{
       type: 'CARD',
       parameters: {

@@ -49,22 +49,22 @@ function onBuyClicked() {
         tr: '15876ABCD',  // Your custom transaction reference ID
         url: 'https://nifty-nightingale-bdf053.netlify.app',
         mc: '5192', //Your merchant category code
-        tn: 'Purchase in Merchant',
+        tn: 'Purchase in Merchant'
       
-      },
-    },
-    {
-      supportedMethods: ['https://google.com/pay'],
-      data: {
-        pa: 'akshaykashid@ybl', //BCR2DN6TZ76K7GKI
-        pn: 'demo',
-        tr: '15876ABCD',  // Your custom transaction reference ID
-        url: 'https:127.0.0.1:3000',
-        mc: '5192', //Your merchant category code
-        tn: 'Purchase in Merchant',
+      }
+     }
+    // {
+    //   supportedMethods: ['https://google.com/pay'],
+    //   data: {
+    //     pa: 'akshaykashid@ybl', //BCR2DN6TZ76K7GKI
+    //     pn: 'demo',
+    //     tr: '15876ABCD',  // Your custom transaction reference ID
+    //     url: 'https:127.0.0.1:3000',
+    //     mc: '5192', //Your merchant category code
+    //     tn: 'Purchase in Merchant',
        
-      },
-    },
+    //   },
+    // },
     // {
     //   supportedMethods: ['https://pwp-server.appspot.com/pay-dev'],
     //   data: {
@@ -121,7 +121,7 @@ function onBuyClicked() {
     //     ]
     //   }
     // }
-  ];
+  ]
 
   // Create order detail data.
   const details = {
@@ -166,10 +166,10 @@ function onBuyClicked() {
 
 //show payment UI
 function showPaymentUI(request, canMakePayment) {
-  // if (!canMakePayment) {
-  //   handleNotReadyToPay();
-  //   return;
-  // }
+  if (!canMakePayment) {
+    handleNotReadyToPay();
+    return;
+  }
 
   let paymentTimeout = window.setTimeout(function() {
     window.clearTimeout(paymentTimeout);
@@ -195,30 +195,30 @@ function showPaymentUI(request, canMakePayment) {
 }
 
 function processResponse(instrument) {
-  // var instrumentString = instrumentToJsonString(instrument);
-  // console.log(instrumentString);
+  var instrumentString = instrumentToJsonString(instrument);
+  console.log(instrumentString);
  
-  // fetch('/buy', {
-  //   method: 'POST',
-  //   headers: new Headers({'Content-Type': 'application/json'}),
-  //   body: instrumentString,
-  // })
-  //     .then(function(buyResult) {
-  //       console.log("buy result::",buyResult)
-  //       if (buyResult.ok) {
-  //         return buyResult.json();
-  //       }
-  //       console.log('Error sending instrument to server.');
-  //     })
-  //     .then(function(buyResultJson) {
+  fetch('/buy', {
+    method: 'POST',
+    headers: new Headers({'Content-Type': 'application/json'}),
+    body: instrumentString,
+  })
+      .then(function(buyResult) {
+        console.log("buy result::",buyResult)
+        if (buyResult.ok) {
+          return buyResult.json();
+        }
+        console.log('Error sending instrument to server.');
+      })
+      .then(function(buyResultJson) {
         
-  //       completePayment(instrument, buyResultJson.status, buyResultJson.message);
+        completePayment(instrument, buyResultJson.status, buyResultJson.message);
  
-  //     })
-  //     .catch(function(err) {
-  //       console.log('Unable to process payment. ' + err);
-  //     });
-  completePayment(instrument, 200, "success");
+      })
+      .catch(function(err) {
+        console.log('Unable to process payment. ' + err);
+      });
+  // completePayment(instrument, 200, "success");
       // buyResult.json();
       // completePayment(instrument, "success", "payment done");
  }
