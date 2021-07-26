@@ -101,7 +101,7 @@ function createPaymentRequest() {
   });
 
   const details = {
-    total: {label: 'Test Purchase', amount: {currency: 'USD', value: '1.00'}}
+    total: {label: 'Test Purchase', amount: {currency: 'INR', value: '1.00'}}
   };
 
   const options = {
