@@ -53,7 +53,7 @@ function getGooglePaymentsConfiguration() {
     merchantInfo: {
       // A merchant ID is available after approval by Google.
       merchantId:'BCR2DN6TZ76K7GKI',
-      merchantName: 'Example Merchant'
+      merchantName: 'demo'
     },
     // pa: 'akshaykashid@ybl', //BCR2DN6TZ76K7GKI
     // pn: 'demo',
